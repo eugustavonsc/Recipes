@@ -27,4 +27,4 @@ def recipe(request, id):
     })
 
 
-# Create your views here.
+

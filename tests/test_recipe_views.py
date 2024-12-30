@@ -21,6 +21,7 @@ class recipeViewsTest(TestCase):
     def test_recipe_category_view_funcion_is_correct(self):
         view= resolve(reverse('recipes:category', args=[1]))
         self.assertIs(view.func, views.category)
+    
     def test_recipe_category_view_returns_status_code_404_not_found_if_no_recipes_found(self):
         response = self.client.get(reverse('recipes:category', args=[1]))
         self.assertEqual(response.status_code, 404)
@@ -28,4 +29,8 @@ class recipeViewsTest(TestCase):
     def test_recipe_detail_view_funcion_is_correct(self):
         view= resolve(reverse('recipes:recipe', args=[1]))
         self.assertIs(view.func, views.recipe)
+    
+    def test_recipe_detail_view_returns_status_code_404_not_found_if_no_recipe_found(self):
+        response = self.client.get(reverse('recipes:recipe', args=[1s]))
+        self.assertEqual(response.status_code, 404)
     

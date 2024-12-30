@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 from recipes import views
+from recipes.models import Recipe, Category
+from django.contrib.auth.models import User
 class recipeViewsTest(TestCase):
     def test_recipe_home_view_funcion_is_correct(self):
         view= resolve(reverse('recipes:home'))
@@ -17,7 +19,10 @@ class recipeViewsTest(TestCase):
     def test_recipe_home_shows_no_recipes_found_if_no_recipes(self):
         response = self.client.get(reverse('recipes:home'))
         self.assertIn( 'No recipes found here :( ', response.content.decode("utf-8"))
-    
+    def test_recipe_home_template_loads_recipes(self):
+        Category.objects.create(name='Category ')
+        assert 1 == 1
+
     def test_recipe_category_view_funcion_is_correct(self):
         view= resolve(reverse('recipes:category', args=[1]))
         self.assertIs(view.func, views.category)

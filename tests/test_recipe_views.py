@@ -36,6 +36,6 @@ class recipeViewsTest(TestCase):
         self.assertIs(view.func, views.recipe)
     
     def test_recipe_detail_view_returns_status_code_404_not_found_if_no_recipe_found(self):
-        response = self.client.get(reverse('recipes:recipe', args=[1s]))
+        response = self.client.get(reverse('recipes:recipe', args=[1]))
         self.assertEqual(response.status_code, 404)
     

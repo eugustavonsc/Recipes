@@ -3,6 +3,7 @@ from django.urls import reverse, resolve
 from recipes import views
 from recipes.models import Recipe, Category
 from django.contrib.auth.models import User
+
 class recipeViewsTest(TestCase):
     def test_recipe_home_view_funcion_is_correct(self):
         view= resolve(reverse('recipes:home'))
@@ -20,7 +21,28 @@ class recipeViewsTest(TestCase):
         response = self.client.get(reverse('recipes:home'))
         self.assertIn( 'No recipes found here :( ', response.content.decode("utf-8"))
     def test_recipe_home_template_loads_recipes(self):
-        Category.objects.create(name='Category ')
+        category = Category.objects.create(name='Category')
+        author = User.objects.create_user(
+            first_name='user',
+            last_name='name',
+            username='username',
+            password='123456',
+            email='user@example.com'
+        )
+        recipe = Recipe.objects.create(
+            category=category,
+            author=author,
+            title='recipe title',
+            description='recipe description',
+            slug='recipe-slug',
+            preparation_time=10,
+            preparation_time_unit='minutos',
+            servings=5,
+            servings_unit='porções',
+            preparation_steps='recipe preparation steps',
+            preparation_steps_is_html=False,
+            is_published=True
+        )
         assert 1 == 1
 
     def test_recipe_category_view_funcion_is_correct(self):

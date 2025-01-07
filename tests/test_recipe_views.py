@@ -27,23 +27,24 @@ class recipeViewsTest(TestCase):
             last_name='name',
             username='username',
             password='123456',
-            email='user@example.com'
+            email='username@email.com',
         )
         recipe = Recipe.objects.create(
             category=category,
             author=author,
-            title='recipe title',
-            description='recipe description',
+            title='Recipe Title',
+            description='Recipe Description',
             slug='recipe-slug',
             preparation_time=10,
-            preparation_time_unit='minutos',
+            preparation_time_unit='Minutos',
             servings=5,
-            servings_unit='porções',
-            preparation_steps='recipe preparation steps',
+            servings_unit='Porções',
+            preparation_steps='Recipe Preparation Steps',
             preparation_steps_is_html=False,
-            is_published=True
+            is_published=True,
         )
         assert 1 == 1
+
 
     def test_recipe_category_view_funcion_is_correct(self):
         view= resolve(reverse('recipes:category', args=[1]))

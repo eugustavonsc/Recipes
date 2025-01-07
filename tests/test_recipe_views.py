@@ -22,6 +22,7 @@ class recipeViewsTest(TestCase):
         self.assertIn( 'No recipes found here :( ', response.content.decode("utf-8"))
     def test_recipe_home_template_loads_recipes(self):
         category = Category.objects.create(name='Category')
+        #fixtures
         author = User.objects.create_user(
             first_name='user',
             last_name='name',
@@ -43,6 +44,7 @@ class recipeViewsTest(TestCase):
             preparation_steps_is_html=False,
             is_published=True,
         )
+        #tests
         response = self.client.get(reverse('recipes:home'))
         content= response.content.decode("utf-8")
         response_context = response.context['recipes']

@@ -40,8 +40,6 @@ class recipeViewsTest(RecipeTestBase):
         # Testa se as receitas são carregadas no template da página inicial
         self.make_recipe( is_published=False)
         response = self.client.get(reverse('recipes:home'))
-        content = response.content.decode('utf-8')
-        response_context_recipes = response.context['recipes']
         self.assertIn(
             '<h1>No recipes found here :( </h1>',
             response.content.decode('utf-8')
@@ -72,6 +70,14 @@ class recipeViewsTest(RecipeTestBase):
         
         
         self.assertIn(needed_title, content)
+    
+    def test_recipe_category_template_dont_load_recipes_not_published(self):
+        # Testa se as receitas são carregadas no template da página inicial
+        recipe= self.make_recipe( is_published=False)
+        response = self.client.get(
+            reverse('recipes:recipe', kwargs={'id': recipe.category.id})
+        )        
+        self.assertEqual(response.status_code, 404)
         
 
     def test_recipe_detail_view_function_is_correct(self):
@@ -104,3 +110,16 @@ class recipeViewsTest(RecipeTestBase):
         content = response.content.decode('utf-8')
         # checa se o título da receita está no conteúdo da página
         self.assertIn(needed_title, content)
+    
+    def test_recipe_detail_template_dont_load_recipe_not_published(self):
+        # Testa se as receitas são carregadas no template da página inicial
+        recipe= self.make_recipe( is_published=False)
+        response = self.client.get(
+            reverse(
+                'recipes:recipe',
+                kwargs={
+                    'id': recipe.category.id
+                }
+            )
+        ) 
+        self.assertEqual(response.status_code, 404)

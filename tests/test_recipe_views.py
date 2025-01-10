@@ -1,6 +1,6 @@
 from django.urls import reverse, resolve
 from recipes import views
-from .test_recipe_base import RecipeTestBase, Recipe
+from .test_recipe_base import RecipeTestBase
 
 class recipeViewsTest(RecipeTestBase):
 
@@ -49,6 +49,18 @@ class recipeViewsTest(RecipeTestBase):
             reverse('recipes:category', kwargs={'category_id': 1000})
         )
         self.assertEqual(response.status_code, 404)
+    
+    def test_recipe_category_template_loads_recipes(self):
+        # Testa se as receitas são carregadas no template da página de categoria
+        needed_title = 'this is a category test'
+        self.make_recipe( title=needed_title)
+        response = self.client.get(reverse('recipes:category', args=(1,)))
+        content = response.content.decode('utf-8')
+        response_context_recipes = response.context['recipes']
+        
+        
+        self.assertIn(needed_title, content)
+        
 
     def test_recipe_detail_view_function_is_correct(self):
         # Testa se a função da view da página de detalhes da receita está correta
@@ -63,3 +75,20 @@ class recipeViewsTest(RecipeTestBase):
             reverse('recipes:recipe', kwargs={'id': 1000})
         )
         self.assertEqual(response.status_code, 404)
+    
+    def test_recipe_detail_template_loads_the_correct_recipe(self):
+        # Testa se o template da página de detalhes da receita carrega a receita correta
+        needed_title = 'This is a detail page - It load one recipe'
+        # Cria uma receita
+        self.make_recipe(title=needed_title)
+        response = self.client.get(
+            reverse(
+                'recipes:recipe',
+                kwargs={
+                    'id': 1
+                }
+            )
+        )
+        content = response.content.decode('utf-8')
+        # checa se o título da receita está no conteúdo da página
+        self.assertIn(needed_title, content)
